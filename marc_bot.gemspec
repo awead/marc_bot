@@ -1,16 +1,16 @@
 # frozen_string_literal: true
 
-require_relative "lib/marc/bot/version"
+require_relative "lib/marc_bot/version"
 
 Gem::Specification.new do |spec|
-  spec.name = "marc-bot"
-  spec.version = Marc::Bot::VERSION
+  spec.name = "marc_bot"
+  spec.version = MarcBot::VERSION
   spec.authors = ["Adam Wead"]
   spec.email = ["awead@users.noreply.github.com"]
 
   spec.summary = "A MARC record generator used for testing library systems"
   spec.description = "Uses FactorBot-style syntax to generate MARC records with various random content in them."
-  spec.homepage = "https://github.com/awead/marc-bot"
+  spec.homepage = "https://github.com/awead/marc_bot"
   spec.required_ruby_version = ">= 2.4.0"
 
   spec.metadata["homepage_uri"] = spec.homepage
@@ -26,8 +26,12 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   spec.add_dependency "factory_bot", "~> 6.2"
+  spec.add_dependency "faker", "~> 2.18"
   spec.add_dependency "marc", "~> 1.1"
 
+  spec.add_development_dependency "faker"
+  spec.add_development_dependency "pry"
   spec.add_development_dependency "standard", "~> 1.1"
   spec.add_development_dependency "rspec", "~> 3.10"
+  spec.add_development_dependency "rspec-its"
 end

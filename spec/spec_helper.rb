@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
-require "marc/bot"
+require "marc_bot"
+require "pry"
+require "faker"
+require "rspec/its"
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
