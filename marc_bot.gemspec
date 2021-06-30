@@ -31,6 +31,7 @@ Gem::Specification.new do |spec|
 
   spec.add_development_dependency "faker"
   spec.add_development_dependency "pry"
+  spec.add_development_dependency "simplecov"
   spec.add_development_dependency "standard", "~> 1.1"
   spec.add_development_dependency "rspec", "~> 3.10"
   spec.add_development_dependency "rspec-its"

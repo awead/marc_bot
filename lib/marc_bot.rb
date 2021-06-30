@@ -4,6 +4,7 @@ require "marc"
 
 module MarcBot
   require "marc_bot/field_builder"
+  require "marc_bot/find_definitions"
   require "marc_bot/version"
 
   class Error < StandardError; end
@@ -19,6 +20,10 @@ module MarcBot
 
   def self.build(record_symbol)
     @record_factory.record
+  end
+
+  def self.reload
+    find_definitions
   end
 
   class Factory

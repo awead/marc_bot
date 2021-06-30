@@ -6,22 +6,6 @@ RSpec.describe MarcBot do
   end
 
   describe "building a new record" do
-    before do
-      MarcBot.define do
-        factory :example do
-          leader { "1234567890" }
-          f006 { "00000000000000" }
-          f100 { "The Author" }
-          f245 do
-            {
-              a: "Title A",
-              b: "Title B"
-            }
-          end
-        end
-      end
-    end
-
     let(:sample) { MarcBot.build(:example) }
 
     it "returns MARC record" do
