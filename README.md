@@ -3,25 +3,56 @@
 A MARC record generator inspired by [FactoryBot](https://github.com/thoughtbot/factory_bot). 
 Use it to create sample MARC records for testing your applications.
 
-## Installation
+Note: This is in a very alpha state. Comments, architecture suggestions, and feature requests are all welcome
 
-Add this line to your application's Gemfile:
+## Setup
+
+Add the gem to you Gemfile. You'll probably only want this in your dev and test environments. And, while you're at
+it, why don't you add Faker too?
+
+Add this line to your application's Gemfile
 
 ``` ruby
-gem 'marc_bot'
+group :development, :test do 
+  gem 'faker'
+  gem 'marc_bot'
+end
 ```
 
 And then execute:
 
-    $ bundle install
+    bundle install
 
-Or install it yourself as:
+Or install the gem directly:
 
-    $ gem install marc_bot
+    gem install marc_bot
+
+### Usage with RSpec
+
+If you're running this in a test suite, such as RSpec, you'll need to initialize your factory definitions:
+
+``` ruby
+require 'faker'
+require 'marc_bot'
+
+RSpec.configure do |config|
+  config.before(:suite) do
+    MarcBot.reload
+  end
+end
+```
 
 ## Usage
 
-Define a factory for a given kind of record you'd like to create and assign its values:
+Create a directory to store all of you different factory definitions. Borrowing from FactoryBot, these directories
+are:
+
+* records
+* test/records
+* spec/records
+
+Create a file in one of those directories--it can have any name, so long as it ends in `.rb`--and 
+define a factory for a given kind of record you'd like to create and assign its values:
 
 ``` ruby
 MarcBot.define do
@@ -45,9 +76,16 @@ Then call-up the factory when you need it:
 book = MarcBot.build(:book)
 ```
 
+You can also pass in additional fields at build time:
+
+``` ruby
+book = MarcBot.build(:book, f949: { a: "QA76.6.T4494 2020", w: "LC" })
+```
+
 ### Syntax
 
-All tagged fields are prefaced with an "f". If no subfield is specified, `$a` is assumed.
+All tagged fields should be prefaced with an "f", although technically, any non-numeric set of letters is fine. We're
+just looking for three numbers. If no subfield is specified, `$a` is assumed.
 
 ## Development
 
