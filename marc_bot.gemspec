@@ -25,8 +25,6 @@ Gem::Specification.new do |spec|
   spec.executables = spec.files.grep(%r{\Aexe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
 
-  spec.add_dependency "factory_bot", "~> 6.2"
-  spec.add_dependency "faker", "~> 2.18"
   spec.add_dependency "marc", "~> 1.1"
 
   spec.add_development_dependency "faker"
