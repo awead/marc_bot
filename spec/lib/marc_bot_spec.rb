@@ -18,6 +18,16 @@ RSpec.describe MarcBot do
     end
   end
 
+  describe "building with options" do
+    let(:sample) { MarcBot.build(:example, f949: {t: "ML 410 .B117 2020", w: "LC"}) }
+
+    it "returns MARC record" do
+      expect(sample).to be_a(MARC::Record)
+      expect(sample["949"]["t"]).to eq("ML 410 .B117 2020")
+      expect(sample["949"]["w"]).to eq("LC")
+    end
+  end
+
   describe "unsupported options" do
     before do
       MarcBot.define do

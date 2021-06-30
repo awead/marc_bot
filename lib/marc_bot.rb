@@ -21,12 +21,15 @@ module MarcBot
       factories.register(record_name, block)
     end
 
-    def build(record_symbol, *args)
+    def build(record_symbol, **options)
       find_definitions if factories.nil?
 
       record_factory = factories.find(record_symbol)
       factory = Factory.new
       factory.instance_exec(&record_factory)
+      options.map do |option|
+        factory.send(option[0]) { option[1] }
+      end
       factory.record
     end
 
