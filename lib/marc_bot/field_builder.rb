@@ -1,5 +1,10 @@
 module MarcBot
   class FieldBuilder
+    SKIP_KEYS = %i[
+      indicator1
+      indicator2
+    ]
+
     def self.call(**args)
       new(args.delete(:method), args.delete(:input), args).fields
     end
@@ -16,7 +21,7 @@ module MarcBot
       if input.is_a?(String)
         data_or_control_field(input)
       elsif input.is_a?(Hash)
-        MARC::DataField.new(tag, "0", " ", *subfield_array)
+        MARC::DataField.new(tag, indicator1, indicator2, *subfield_array)
       else
         raise ArgumentError, "#{input.class} isn't a supported factory type"
       end
@@ -34,6 +39,7 @@ module MarcBot
 
     def subfield_array
       input
+        .reject { |key, _value| SKIP_KEYS.include?(key) }
         .to_a
         .map { |subfield| subfield.map(&:to_s) }
     end
@@ -45,6 +51,14 @@ module MarcBot
 
         result
       end
+    end
+
+    def indicator1
+      input.fetch(:indicator1, "0")
+    end
+
+    def indicator2
+      input.fetch(:indicator2, " ")
     end
   end
 end

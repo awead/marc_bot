@@ -40,6 +40,22 @@ RSpec.describe MarcBot::FieldBuilder do
     it { is_expected.to eq("100 0  $a #{a_input} $b #{b_input} ") }
   end
 
+  context "with a hash including indicator fields" do
+    let(:method) { :f100 }
+
+    let(:input) do
+      {
+        indicator1: "1",
+        indicator2: "2",
+        a: a_input
+      }
+    end
+
+    let(:a_input) { Faker::Name.name }
+
+    it { is_expected.to eq("100 12 $a #{a_input} ") }
+  end
+
   context "with an unsupported factory type" do
     it "raises and error" do
       expect {
