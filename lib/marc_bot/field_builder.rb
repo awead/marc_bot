@@ -41,7 +41,7 @@ module MarcBot
     def tag
       @tag ||= begin
         result = method.to_s.match(/\d{3}/).to_s
-        return if result == ""
+        raise MarcBot::Error, "could not determine tag for :#{method}" if result == ""
 
         result
       end

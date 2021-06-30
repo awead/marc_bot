@@ -6,6 +6,8 @@ module MarcBot
   require "marc_bot/field_builder"
   require "marc_bot/version"
 
+  class Error < StandardError; end
+
   def self.define(&block)
     instance_exec(&block)
   end
@@ -27,7 +29,11 @@ module MarcBot
     end
 
     def method_missing(method, *args, &block)
-      record.append MarcBot::FieldBuilder.call(method: method, input: yield, args: args)
+      if method == :leader
+        record.leader = yield
+      else
+        record.append MarcBot::FieldBuilder.call(method: method, input: yield, args: args)
+      end
     end
 
     def respond_to_missing?
