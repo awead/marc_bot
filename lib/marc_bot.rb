@@ -3,46 +3,40 @@
 require "marc"
 
 module MarcBot
+  require "marc_bot/factory"
   require "marc_bot/field_builder"
   require "marc_bot/find_definitions"
+  require "marc_bot/registry"
   require "marc_bot/version"
 
   class Error < StandardError; end
 
-  def self.define(&block)
-    instance_exec(&block)
-  end
-
-  def self.factory(record_name, &block)
-    @record_factory = Factory.new(record_name)
-    @record_factory.instance_exec(&block)
-  end
-
-  def self.build(record_symbol)
-    @record_factory.record
-  end
-
-  def self.reload
-    find_definitions
-  end
-
-  class Factory
-    attr_reader :record
-
-    def initialize(record_name)
-      @record = MARC::Record.new
+  class << self
+    def define(&block)
+      instance_exec(&block)
     end
 
-    def method_missing(method, *args, &block)
-      if method == :leader
-        record.leader = yield
-      else
-        record.append MarcBot::FieldBuilder.call(method: method, input: yield, args: args)
-      end
+    def factory(record_name, &block)
+      block ||= ->(result) { result }
+      factories.register(record_name, block)
     end
 
-    def respond_to_missing?
-      super
+    def build(record_symbol, *args)
+      find_definitions if factories.nil?
+
+      record_factory = factories.find(record_symbol)
+      factory = Factory.new
+      factory.instance_exec(&record_factory)
+      factory.record
+    end
+
+    def reload
+      @factories = nil
+      find_definitions
+    end
+
+    def factories
+      @factories ||= Registry.new("Factory")
     end
   end
 end

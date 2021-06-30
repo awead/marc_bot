@@ -19,13 +19,17 @@ RSpec.describe MarcBot do
   end
 
   describe "unsupported options" do
+    before do
+      MarcBot.define do
+        factory :bad_record do
+          badfield { "this is an error" }
+        end
+      end
+    end
+
     it "raises an error" do
       expect {
-        MarcBot.define do
-          factory :bad_record do
-            badfield { "this is an error" }
-          end
-        end
+        MarcBot.build(:bad_record)
       }.to raise_error(MarcBot::Error, "could not determine tag for :badfield")
     end
   end
