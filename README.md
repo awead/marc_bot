@@ -66,6 +66,11 @@ MarcBot.define do
         c: "Dave Thomas, Andy Hunt."
       }
     end
+    f650 do
+      {
+        z: ["Books", "Programming"]
+      }
+    end
   end
 end
 ```

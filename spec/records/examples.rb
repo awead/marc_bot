@@ -10,4 +10,24 @@ MarcBot.define do
       }
     end
   end
+
+  factory :multifield do
+    f650 do
+      {
+        indicator2: "0",
+        a: "A",
+        z: ["B1", "B2"],
+        x: "C",
+        y: "D"
+      }
+    end
+
+    f650 do
+      {
+        indicator2: "0",
+        a: "A",
+        z: "B"
+      }
+    end
+  end
 end

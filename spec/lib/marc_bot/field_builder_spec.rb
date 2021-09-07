@@ -56,6 +56,23 @@ RSpec.describe MarcBot::FieldBuilder do
     it { is_expected.to eq("100 12 $a #{a_input} ") }
   end
 
+  context "with repeated subfields" do
+    let(:method) { :f650 }
+
+    let(:input) do
+      {
+        x: a_input,
+        z: [b_input, c_input]
+      }
+    end
+
+    let(:a_input) { Faker::Name.name }
+    let(:b_input) { Faker::Name.name }
+    let(:c_input) { Faker::Name.name }
+
+    it { is_expected.to eq("650 0  $x #{a_input} $z #{b_input} $z #{c_input} ") }
+  end
+
   context "with an unsupported factory type" do
     it "raises and error" do
       expect {

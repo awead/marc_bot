@@ -28,6 +28,16 @@ RSpec.describe MarcBot do
     end
   end
 
+  describe "building with multiple fields" do
+    let(:sample) { MarcBot.build(:multifield) }
+
+    it "returns a record with all fields" do
+      expect(sample).to be_a(MARC::Record)
+      expect(sample.fields[0].subfields.map(&:value)).to contain_exactly("A", "B1", "B2", "C", "D")
+      expect(sample.fields[1].subfields.map(&:value)).to contain_exactly("A", "B")
+    end
+  end
+
   describe "unsupported options" do
     before do
       MarcBot.define do

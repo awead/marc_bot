@@ -40,8 +40,17 @@ module MarcBot
     def subfield_array
       input
         .reject { |key, _value| SKIP_KEYS.include?(key) }
+        .map { |key, value| build_subfield_array(key, value) }
+        .flatten
+        .each_slice(2)
         .to_a
-        .map { |subfield| subfield.map(&:to_s) }
+    end
+
+    def build_subfield_array(key, value)
+      key = key.to_s
+      return [key, value] unless value.is_a?(Array)
+
+      value.map { |v| [key, v] }
     end
 
     def tag
